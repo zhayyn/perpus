@@ -10,6 +10,14 @@ class CreateBookLoan extends CreateRecord
 {
     protected static string $resource = BookLoanResource::class;
 
+    protected function afterCreate(): void
+    {
+        // Ubah status copy buku menjadi dipinjam
+        if ($this->record->bookCopy) {
+            $this->record->bookCopy->update(['status' => 'dipinjam']);
+        }
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
