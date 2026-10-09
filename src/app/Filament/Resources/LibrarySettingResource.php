@@ -26,11 +26,15 @@ class LibrarySettingResource extends Resource
                 Forms\Components\TextInput::make('key')
                     ->required()
                     ->maxLength(255)
-                    ->label('Kunci (Key)'),
+                    ->label('Kunci (Key)')
+                    ->disabled()
+                    ->dehydrated(false),
                 Forms\Components\TextInput::make('label')
                     ->required()
                     ->maxLength(255)
-                    ->label('Label Tampilan'),
+                    ->label('Label Tampilan')
+                    ->disabled()
+                    ->dehydrated(false),
                 Forms\Components\Select::make('type')
                     ->options([
                         'string' => 'Teks (String)',
@@ -39,32 +43,34 @@ class LibrarySettingResource extends Resource
                         'image' => 'Gambar/Logo (Image)',
                     ])
                     ->required()
-                    ->live()
-                    ->label('Tipe Data'),
+                    ->label('Tipe Data')
+                    ->disabled()
+                    ->dehydrated(false),
                 Forms\Components\TextInput::make('value')
-                    ->required()
+                    ->required(fn (Forms\Get $get) => in_array($get('type'), ['string', 'integer']))
                     ->maxLength(255)
-                    ->label('Nilai (Teks)')
+                    ->label('Nilai Pengaturan')
                     ->visible(fn (Forms\Get $get) => in_array($get('type'), ['string', 'integer'])),
                 Forms\Components\Select::make('value')
                     ->options(['1' => 'Aktif', '0' => 'Tidak Aktif'])
-                    ->required()
-                    ->label('Nilai (Boolean)')
+                    ->required(fn (Forms\Get $get) => $get('type') === 'boolean')
+                    ->label('Nilai Pengaturan')
                     ->visible(fn (Forms\Get $get) => $get('type') === 'boolean'),
                 Forms\Components\FileUpload::make('value')
                     ->image()
                     ->directory('settings')
-                    ->required()
                     ->label('Upload Gambar')
                     ->visible(fn (Forms\Get $get) => $get('type') === 'image'),
                 Forms\Components\TextInput::make('group')
                     ->maxLength(255)
                     ->label('Grup')
-                    ->dehydrateStateUsing(fn ($state) => $state ?? ''),
+                    ->disabled()
+                    ->dehydrated(false),
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi')
                     ->columnSpanFull()
-                    ->dehydrateStateUsing(fn ($state) => $state ?? ''),
+                    ->disabled()
+                    ->dehydrated(false),
             ]);
     }
 
@@ -94,7 +100,7 @@ class LibrarySettingResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -103,7 +109,6 @@ class LibrarySettingResource extends Resource
     {
         return [
             'index' => Pages\ListLibrarySettings::route('/'),
-            'create' => Pages\CreateLibrarySetting::route('/create'),
             'edit' => Pages\EditLibrarySetting::route('/{record}/edit'),
         ];
     }
