@@ -80,6 +80,10 @@ class AdminPanelProvider extends PanelProvider
                 'Peminjaman & Denda',
                 'Laporan',
                 'Pengaturan',
-            ]);
+            ])
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::FOOTER,
+                fn (): string => '<div class="text-center text-sm text-gray-500 py-4 opacity-70">Developed by <span class="font-bold">zhayyn</span> &bull; 081317361689</div>'
+            );
     }
 }

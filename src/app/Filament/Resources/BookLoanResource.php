@@ -36,7 +36,31 @@ class BookLoanResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->disabled(fn (string $operation): bool => $operation === 'edit'),
+                            ->disabled(fn (string $operation): bool => $operation === 'edit')
+                            ->rules([
+                                fn (string $operation) => function (string $attribute, $value, \Closure $fail) use ($operation) {
+                                    if ($operation === 'edit') return;
+                                    
+                                    // 1. Cek Denda Belum Dibayar
+                                    $unpaidFines = \App\Models\LoanFine::whereHas('bookLoan', function($q) use ($value) {
+                                        $q->where('member_id', $value);
+                                    })->where('payment_status', 'belum_bayar')->count();
+                                    
+                                    if ($unpaidFines > 0) {
+                                        $fail('Anggota ini tidak bisa meminjam karena memiliki denda yang belum dibayar.');
+                                    }
+
+                                    // 2. Cek Limit Peminjaman
+                                    $activeLoans = \App\Models\BookLoan::where('member_id', $value)
+                                        ->whereIn('status', ['dipinjam', 'terlambat'])
+                                        ->count();
+                                        
+                                    $maxLoans = \App\Models\LibrarySetting::get('max_loan_books', 3);
+                                    if ($activeLoans >= $maxLoans) {
+                                        $fail("Anggota ini telah mencapai batas maksimal peminjaman ({$maxLoans} buku).");
+                                    }
+                                },
+                            ]),
 
                         Forms\Components\Select::make('book_copy_id')
                             ->relationship('bookCopy', 'copy_code', fn ($query) => $query->where('status', 'tersedia'))

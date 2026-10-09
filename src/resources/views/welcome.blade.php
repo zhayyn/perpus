@@ -61,7 +61,12 @@
     </main>
 
     <footer class="bg-white border-t py-6 text-center text-gray-500 text-sm">
-        &copy; {{ date('Y') }} Perpustakaan Digital. All rights reserved.
+        <div class="mb-2">
+            &copy; {{ date('Y') }} Perpustakaan Digital. All rights reserved.
+        </div>
+        <div class="text-xs text-gray-400 opacity-80 mt-2">
+            Developed by <span class="font-semibold text-gray-500 tracking-wider">zhayyn</span> &bull; 081317361689
+        </div>
     </footer>
 </body>
 </html>
