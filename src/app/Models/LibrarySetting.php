@@ -10,6 +10,19 @@ class LibrarySetting extends Model
     protected $table    = 'library_settings';
     protected $fillable = ['key', 'value', 'type', 'label', 'description', 'group'];
 
+    protected static function booted(): void
+    {
+        static::saved(function ($setting) {
+            Cache::forget("library_setting_val_{$setting->key}");
+            Cache::forget("library_setting_{$setting->key}");
+        });
+
+        static::deleted(function ($setting) {
+            Cache::forget("library_setting_val_{$setting->key}");
+            Cache::forget("library_setting_{$setting->key}");
+        });
+    }
+
     /**
      * Ambil nilai setting berdasarkan key.
      * Kita cache hasil akhir (primitive value) bukan Model instance-nya, 
