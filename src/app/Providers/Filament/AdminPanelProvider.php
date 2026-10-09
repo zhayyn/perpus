@@ -39,6 +39,15 @@ class AdminPanelProvider extends PanelProvider
                 'danger'  => Color::Rose,
             ])
             ->brandName('Perpustakaan Digital')
+            ->brandLogo(function () {
+                try {
+                    $logo = \App\Models\LibrarySetting::get('site_logo');
+                    return $logo ? asset('storage/' . $logo) : null;
+                } catch (\Exception $e) {
+                    return null;
+                }
+            })
+            ->brandLogoHeight('3rem')
             ->darkMode(true)
             ->font('Plus Jakarta Sans')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

@@ -31,18 +31,32 @@ class LibrarySettingResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->label('Label Tampilan'),
-                Forms\Components\TextInput::make('value')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Nilai (Value)'),
                 Forms\Components\Select::make('type')
                     ->options([
                         'string' => 'Teks (String)',
                         'integer' => 'Angka (Integer)',
                         'boolean' => 'Pilihan (Boolean)',
+                        'image' => 'Gambar/Logo (Image)',
                     ])
                     ->required()
+                    ->live()
                     ->label('Tipe Data'),
+                Forms\Components\TextInput::make('value')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('Nilai (Teks)')
+                    ->visible(fn (Forms\Get $get) => in_array($get('type'), ['string', 'integer'])),
+                Forms\Components\Select::make('value')
+                    ->options(['1' => 'Aktif', '0' => 'Tidak Aktif'])
+                    ->required()
+                    ->label('Nilai (Boolean)')
+                    ->visible(fn (Forms\Get $get) => $get('type') === 'boolean'),
+                Forms\Components\FileUpload::make('value')
+                    ->image()
+                    ->directory('settings')
+                    ->required()
+                    ->label('Upload Gambar')
+                    ->visible(fn (Forms\Get $get) => $get('type') === 'image'),
                 Forms\Components\TextInput::make('group')
                     ->maxLength(255)
                     ->label('Grup'),
