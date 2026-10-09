@@ -59,10 +59,12 @@ class LibrarySettingResource extends Resource
                     ->visible(fn (Forms\Get $get) => $get('type') === 'image'),
                 Forms\Components\TextInput::make('group')
                     ->maxLength(255)
-                    ->label('Grup'),
+                    ->label('Grup')
+                    ->dehydrateStateUsing(fn ($state) => $state ?? ''),
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->dehydrateStateUsing(fn ($state) => $state ?? ''),
             ]);
     }
 
