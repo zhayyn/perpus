@@ -1,3 +1,13 @@
+<!-- 
+========================================================================
+  PROPRIETARY SOURCE CODE
+  System Name : Sistem Informasi Perpustakaan
+  Developed by: zhayyn
+  Contact/WA  : 081317361689
+  
+  This code is digitally signed. Do not remove this signature.
+========================================================================
+-->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -61,12 +71,7 @@
     </main>
 
     <footer class="bg-white border-t py-6 text-center text-gray-500 text-sm">
-        <div class="mb-2">
-            &copy; {{ date('Y') }} Perpustakaan Digital. All rights reserved.
-        </div>
-        <div class="text-xs text-gray-400 opacity-80 mt-2">
-            Developed by <span class="font-semibold text-gray-500 tracking-wider">zhayyn</span> &bull; 081317361689
-        </div>
+        &copy; {{ date('Y') }} Perpustakaan Digital. All rights reserved.
     </footer>
 </body>
 </html>
