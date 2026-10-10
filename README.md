@@ -1,89 +1,51 @@
-# 📚 Aplikasi Perpustakaan Digital
+# 📚 Sistem Informasi Perpustakaan Digital
 
-Aplikasi manajemen perpustakaan berbasis web yang dibangun dengan:
-- **Laravel 11** + **PHP 8.3**
-- **Filament v3** (Admin Panel)
-- **Livewire 3** (Komponen Interaktif)
-- **MySQL 8.0** (Database)
-- **Redis 7** (Cache & Queue)
-- **Docker / OrbStack** (Environment)
+Selamat datang! Aplikasi ini adalah solusi modern untuk manajemen perpustakaan yang didesain agar sangat mudah dikelola, aman, dan cepat. 
+
+Mengibaratkan perpustakaan fisik, aplikasi ini adalah **Pustakawan Digital** Anda. Ia bertugas mencatat siapa yang meminjam buku, kapan buku tersebut harus dikembalikan, menghitung denda secara presisi, hingga menyediakan katalog yang rapi—semuanya tanpa Anda harus menyentuh laci-laci kayu pendaftaran lagi.
 
 ---
 
-## 🚀 Panduan Handover & Instalasi (Clone dari GitHub)
+## 🚀 Panduan Menjalankan Aplikasi (Deployment)
 
-Jika kamu (atau temanmu) ingin menjalankan aplikasi ini di komputer/satker lain, syarat utamanya **hanyalah menginstal Docker Desktop / OrbStack**. Tidak perlu repot install PHP, Composer, atau MySQL secara manual!
+Aplikasi ini sudah dikemas rapi menggunakan **Docker**. Artinya, Anda tidak perlu repot-repot menginstal PHP, MySQL, atau Composer secara manual yang seringkali rawan *error*. Cukup pastikan **Docker Desktop** (atau OrbStack) sudah terinstal dan menyala di komputer/server Anda.
 
-Ikuti langkah instalasi bersih ini:
+Ikuti 3 langkah sederhana berikut:
 
-### 1. Clone Repository
+### 1. Unduh Proyek
+Buka terminal/command prompt Anda dan ketik perintah berikut untuk mengunduh proyek:
 ```bash
-git clone <URL_GITHUB_KAMU> perpustakaan
+git clone https://github.com/zhayyn/perpus.git perpustakaan
 cd perpustakaan
 ```
 
-### 2. Siapkan File Konfigurasi (Environment)
+### 2. Nyalakan Mesin
+Di dalam proyek ini sudah kami siapkan sebuah *remote control* otomatis bernama `Makefile`. Anda cukup menekan satu "tombol" untuk menghidupkan seluruh sistem:
 ```bash
-# Salin konfigurasi environment default
-cp .env.example src/.env
-```
-*(Catatan: Buka file `src/.env` dan pastikan kredensial database sudah sesuai dengan yang ada di `docker-compose.yml`)*
-
-### 3. Build & Jalankan Container
-```bash
-# Perintah sakti untuk menjalankan Docker dan menginstall seluruh package Laravel
 make up
 ```
+*(Tunggu beberapa saat, sistem sedang otomatis merakit server, PHP, dan Database untuk Anda)*
 
-### 4. Setup Database Pertama Kali
-Karena ini instalasi baru, database-nya masih kosong. Jalankan perintah ini untuk melakukan migrasi tabel, seeding pengaturan default, dan akun admin:
+### 3. Siapkan Laci Data
+Setelah mesin menyala, kita perlu membuat laci-laci database dan mengisinya dengan pengaturan bawaan (seperti membuat akun admin dan logo default):
 ```bash
 make fresh
 ```
 
-*(Setelah selesai, kamu bisa login ke `http://localhost:8080/admin` dengan akun admin default yang dibuat dari proses seeding)*
+Selesai! Anda siap beroperasi. 🎉
 
 ---
 
-## 📋 Daftar Perintah (Makefile Shortcuts)
+## 🌐 Cara Mengakses Aplikasi
 
-Di aplikasi ini sudah disediakan `Makefile` agar kamu tidak perlu mengetik perintah docker/artisan yang panjang. Cukup ketik:
+Buka browser kesayangan Anda dan ketik alamat berikut:
 
-```bash
-make help          # Lihat semua perintah
-make up            # Jalankan semua container (otomatis install composer & npm jika belum)
-make down          # Hentikan semua container
-make shell         # Masuk ke shell PHP container
-make artisan cmd="..." # Jalankan artisan command (Contoh: make artisan cmd="make:model Buku")
-make migrate       # Jalankan migrasi database
-make fresh         # Reset & seed ulang database
-make logs          # Lihat log server secara real-time
-```
+- **Halaman Depan Publik:** [http://localhost:8080](http://localhost:8080)
+- **Panel Admin / Pustakawan:** [http://localhost:8080/admin](http://localhost:8080/admin)
+- **Manajemen Database (phpMyAdmin):** [http://localhost:8081](http://localhost:8081)
 
-## 🌐 URL Akses
+*(Catatan: Untuk masuk ke Panel Admin, gunakan akun email dan password default yang dihasilkan pada langkah `make fresh` tadi).*
 
-| URL | Keterangan |
-|-----|------------|
-| http://localhost:8080 | Aplikasi Utama |
-| http://localhost:8080/admin | Admin Panel (Filament) |
-| http://localhost:8081 | phpMyAdmin (Manajemen Database UI) |
-| http://localhost:8025 | Mailpit (Inboks Email Testing Lokal) |
+---
 
-## 📁 Struktur Proyek
-
-```
-perpustakaan/
-├── docker/                 # Resep container (Nginx, PHP, MySQL)
-├── src/                    # KODE SUMBER LARAVEL
-│   ├── app/                # Logika utama (Model, Controller, Filament)
-│   ├── routes/             # Routing aplikasi
-│   ├── database/           # Migrasi & Seeders
-│   └── ...                 
-├── .agents/                # Aturan pengembangan agent AI (SenopaTEA)
-├── docker-compose.yml      # Orkestrasi Docker
-├── Makefile                # Shortcut commands
-└── README.md               # Dokumentasi ini
-```
-
-## 💡 Keamanan (Git)
-Aplikasi ini sudah dikonfigurasi untuk **tidak** mengirimkan file sensitif (seperti kredensial `.env` dan folder `vendor/` atau `node_modules/`) ke GitHub. Aman untuk diunggah ke repositori publik maupun privat.
+*salam hangat from dbprakom*
